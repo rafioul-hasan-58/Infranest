@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthGuard } from './common/guards/auth.guard';
 
 describe('AppController', () => {
@@ -9,7 +8,6 @@ describe('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
     })
       .overrideGuard(AuthGuard)
       .useValue({ canActivate: () => true })

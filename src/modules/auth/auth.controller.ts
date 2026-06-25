@@ -6,7 +6,7 @@ import { ResponseMessage } from '../../common/decorators/response-message.decora
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { AuthGuard } from '../../guards/auth.guard';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {

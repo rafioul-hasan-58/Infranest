@@ -5,7 +5,8 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  // prefix
+  app.setGlobalPrefix('/api/v1', { exclude: ['/'] })
   // Standard response format: { statusCode, success, message, data }
   app.useGlobalInterceptors(new ResponseInterceptor(new Reflector()));
 

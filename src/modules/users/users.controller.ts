@@ -4,6 +4,7 @@ import {
   Delete,
   FileTypeValidator,
   Get,
+  HttpCode,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -26,10 +27,11 @@ import { UserRole } from '@prisma/client';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   // POST /user/register
   @Post('/register')
+  @HttpCode(201)
   @ResponseMessage('User registered successfully!')
   register(@Body() dto: RegisterUserDto) {
     return this.usersService.register(dto);

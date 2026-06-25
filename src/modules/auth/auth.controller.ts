@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from '../users/dto/register-user.dto';
@@ -10,9 +10,10 @@ import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
+  @HttpCode(201)
   @ResponseMessage('User registered and logged in successfully!')
   async register(
     @Body() dto: RegisterUserDto,
@@ -31,6 +32,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(200)
   @ResponseMessage('User logged in successfully!')
   async login(
     @Body() dto: LoginUserDto,
@@ -48,6 +50,7 @@ export class AuthController {
   }
 
   @Post('change-password')
+  @HttpCode(200)
   @UseGuards(AuthGuard)
   @ResponseMessage('Password changed successfully!')
   async changePassword(

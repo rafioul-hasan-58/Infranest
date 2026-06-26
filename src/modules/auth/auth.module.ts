@@ -5,11 +5,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TokenService } from './token.service';
 import { UsersModule } from '../users/users.module';
-import { PrismaModule } from '../../prisma/prisma.module';
 
 @Global()
 @Module({
-  imports: [UsersModule, JwtModule.register({}), ConfigModule, PrismaModule],
+  imports: [UsersModule, JwtModule.register({}), ConfigModule],
   controllers: [AuthController],
   providers: [AuthService, TokenService],
   exports: [AuthService, TokenService],

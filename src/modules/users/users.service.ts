@@ -12,6 +12,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma, UserRole } from '@prisma/client';
 import { TokenService } from '../auth/token.service';
 import { S3Service } from '../s3/s3.service';
+import { QueryBuilder } from '../../common/builders/query-builder';
+import { GetAllUsersQueryDto } from './dto/get-all-users-query.dto';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
@@ -135,10 +137,36 @@ export class UsersService implements OnApplicationBootstrap {
   }
 
   // GET ALL USERS
-  async getAllUser() {
-    const result = await this.prisma.user.findMany();
+  async getAllUser(query: GetAllUsersQueryDto) {
+    const userQuery = new QueryBuilder(this.prisma.user, query)
+      .search(['fullName', 'email', 'location'])
+      .filter()
+      .paginate()
+      .sort()
+      .select({
+        id: true,
+        fullName: true,
+        email: true,
+        profileImage: true,
+        roles: true,
+        location: true,
+        bio: true,
+        activeRole: true,
+        isBlocked: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
+      });
 
-    return result;
+    const [data, meta] = await Promise.all([
+      userQuery.execute(),
+      userQuery.countTotal(),
+    ]);
+
+    return {
+      meta,
+      data,
+    };
   }
 
   // ON STARTUP SEEDING

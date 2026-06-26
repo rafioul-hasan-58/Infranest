@@ -10,6 +10,7 @@ import {
   ParseFilePipe,
   Patch,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -19,6 +20,7 @@ import { ResponseMessage } from '../../common/decorators/response-message.decora
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetAllUsersQueryDto } from './dto/get-all-users-query.dto';
 import { AuthGuard } from '../../common/guards/auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -68,13 +70,14 @@ export class UsersController {
   ) {
     return this.usersService.updateProfile(userId, dto, file);
   }
+
   // GET/user/get-all-users
   @Get('get-all-users')
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ResponseMessage('All users fetched successfully')
-  getAllUser() {
-    return this.usersService.getAllUser();
+  async getAllUser(@Query() query: GetAllUsersQueryDto) {
+    return this.usersService.getAllUser(query);
   }
 
   // DELETE/user/delete-user

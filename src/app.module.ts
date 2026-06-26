@@ -5,6 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { LoggerMiddleware } from './common/middlewares/logger-middleware';
+import { AuthController } from './modules/auth/auth.controller';
 
 @Module({
   imports: [
@@ -21,6 +22,10 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes({ path: 'auth/*', method: RequestMethod.POST })
+      .exclude(
+        { path: '/auth/register', method: RequestMethod.POST },
+        // 'auth/{*splat}'
+      )
+      .forRoutes(AuthController)
   }
 }

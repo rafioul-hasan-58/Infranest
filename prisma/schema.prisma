@@ -21,8 +21,24 @@ model User {
   isVerified   Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  store        Store[]
 }
-
+model Store {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  owner       User    @relation(fields: [ownerId], references: [id])
+  ownerId     String  @db.ObjectId 
+  storeName   String
+  description String?
+  logoUrl     String?
+  bannerUrl   String?
+  isActive    Boolean  @default(true)
+  isVerified  Boolean  @default(false)
+  address     String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([storeName,ownerId])
+}
 enum UserRole {
   CUSTOMER
   SELLER

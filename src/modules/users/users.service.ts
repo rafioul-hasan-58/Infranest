@@ -21,7 +21,7 @@ export class UsersService implements OnApplicationBootstrap {
     private readonly prisma: PrismaService,
     private readonly tokenService: TokenService,
     private readonly s3Service: S3Service,
-  ) {}
+  ) { }
 
   // CREATE
   async register(dto: RegisterUserDto) {
@@ -50,6 +50,14 @@ export class UsersService implements OnApplicationBootstrap {
   // FIND BY EMAIL
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
+  }
+  // FIND BY ID
+  async findById(id: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    })
   }
 
   // HASH PASSWORD
